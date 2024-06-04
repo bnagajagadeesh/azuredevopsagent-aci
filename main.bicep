@@ -1,4 +1,4 @@
-param acrName string = 'crazpagent'
+param acrName string = 'craciazpagent'
 param aciName string = 'ci-azpagent'
 param location string = resourceGroup().location
 param containerName string = 'ci-azpagent'

@@ -2,7 +2,7 @@
 
 This is the companion repository for the [Run a self hosted agent in Docker](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops) 
 
-This repository helps Azure DevOps engineers to setup Azure DevOps self-hosted agent running in Azure Container Instance
+This repository helps Azure DevOps engineers to setup Azure DevOps self-hosted agent running with Azure Container Instance using managed identity
 
 ## Architecture
 ![alt text](images/aci-selfhostedagent-architecture.png)
@@ -20,7 +20,7 @@ Container Instance runs Azure DevOps self hosted agent container and listen for 
 
 ## Getting Started
 
-In this quick start, you create Azure DevOps pipeline which deploys Bicep script to create an Azure container registry, run registry build task to build from a Dockerfile and push to container registry, create user assigned identity, assign acrPull role to user assigned identity on container registry, create container instance with both system assigned identity & user assigned identity, set the registry image from container registry.
+In this quick start, you create Azure DevOps pipeline which deploys Bicep script to create an Azure container registry, run registry build task to build from a Dockerfile and push to container registry, create user assigned identity, assign acrPull role to user assigned identity on container registry, create container instance with both system assigned identity & user assigned identity, set the registry image from container registry and set environment variables AZP_URL, AZP_AGENT_NAME and AZP_POOL.
 
 ### Create an Azure DevOps repository and clone the source code
 Create a new Git repository in Azure DevOps and clone the source code from [Github repo](https://github.com/bnagajagadeesh/azuredevopsagent-aci.git).
