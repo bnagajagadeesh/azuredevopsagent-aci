@@ -53,6 +53,12 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
     }
   }
   properties: {
+    imageRegistryCredentials: [
+      {
+        server: acr.properties.loginServer
+        identity: uai.id
+      }
+    ]
     containers: [
       {
         name: '${containerName}1'
