@@ -13,7 +13,7 @@ fi
 APPLICATION_ID="499b84ac-1321-427f-aa17-267ca6975798"
 
 #azure container instance to fetch access token
-IMDS_ENDPOINT = "http://169.254.169.254/metadata/identity/oauth2/token"
+IMDS_ENDPOINT="http://169.254.169.254/metadata/identity/oauth2/token"
 response=$(curl -s -X GET -H "Metadata: true" "$IMDS_ENDPOINT?resource=$APPLICATION_ID&api-version=2019-08-01")
 echo "token response $response"
 status=$?
