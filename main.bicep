@@ -17,6 +17,9 @@ resource acr 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' = {
   sku: {
     name: 'Basic'
   }
+  properties: {
+    adminUserEnabled: true
+  }
 }
 
 module buildAcrImage 'br/public:deployment-scripts/build-acr:1.0.1' = {
@@ -50,6 +53,13 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
     }
   }
   properties: {
+    imageRegistryCredentials: [
+      {
+        server: acr.properties.loginServer
+        username: acr.listCredentials().username
+        password: acr.listCredentials().passwords[0].value
+      }
+    ]
     containers: [
       {
         name: '${containerName}1'
