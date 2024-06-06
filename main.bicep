@@ -17,9 +17,6 @@ resource acr 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' = {
   sku: {
     name: 'Basic'
   }
-  properties: {
-    adminUserEnabled: false
-  }
 }
 
 module buildAcrImage 'br/public:deployment-scripts/build-acr:1.0.1' = {
@@ -53,12 +50,6 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
     }
   }
   properties: {
-    imageRegistryCredentials: [
-      {
-        server: acr.properties.loginServer
-        identity: uai.id
-      }
-    ]
     containers: [
       {
         name: '${containerName}1'
@@ -151,5 +142,6 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d') // AcrPull role
     principalId: uai.properties.principalId    
+    principalType: 'ServicePrincipal'
   }
 }
