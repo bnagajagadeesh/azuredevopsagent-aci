@@ -6,17 +6,19 @@ if [ -z "${AZP_URL}" ]; then
   exit 1
 fi
 
+echo "Environment variables"
+printenv
 #azure devops application id
 APPLICATION_ID="499b84ac-1321-427f-aa17-267ca6975798"
 
 #azure container instance to fetch access token
 IMDS_ENDPOINT = "http://169.254.169.254/metadata/identity/oauth2/token"
 response=$(curl -s -X GET -H "Metadata: true" "$IMDS_ENDPOINT?resource=$APPLICATION_ID&api-version=2019-08-01")
-status=$?
-if [ $status -ne 0 ]; then
-    echo "Error: Unable to fetch token with IDENTITY_ENDPOINT $IDENTITY_ENDPOINT and IDENTITY_HEADER $IDENTITY_HEADER"
-    exit $status
-fi
+#status=$?
+#if [ $status -ne 0 ]; then
+#    echo "Error: Unable to fetch token with IDENTITY_ENDPOINT $IDENTITY_ENDPOINT and IDENTITY_HEADER $IDENTITY_HEADER"
+#    exit $status
+#fi
 
 AZP_TOKEN=$(echo "$response" | jq -r '.access_token')
 
