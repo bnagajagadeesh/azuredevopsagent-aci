@@ -57,7 +57,7 @@ User Assigned Identity (UAI): It creates a UAI and assigns it the ACR Pull role,
 Container Instance: It creates a container instance with the UAI. The app is configured to use the Docker image from the ACR.
 
 You get an error in container app after the deployment due to missing permissions. 
-![alt text](images/agent-error.png)
+<img src="images/agent-error.png" alt="alt text" width="400"/>
 
 or
 
