@@ -78,7 +78,7 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
             }           
             {
               name: 'AZP_AGENT_NAME'
-              value: 'containerinstance-azpagent'
+              value: 'containerinstance-azpagent1'
             }
             {
               name: 'AZP_POOL'
@@ -104,7 +104,7 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
             }           
             {
               name: 'AZP_AGENT_NAME'
-              value: 'containerinstance-azpagent'
+              value: 'containerinstance-azpagent2'
             }
             {
               name: 'AZP_POOL'
@@ -130,7 +130,7 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
             }           
             {
               name: 'AZP_AGENT_NAME'
-              value: 'containerinstance-azpagent'
+              value: 'containerinstance-azpagent3'
             }
             {
               name: 'AZP_POOL'
