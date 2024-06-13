@@ -52,6 +52,13 @@ Create an Azure DevOps service connection for your Azure subscription. You can r
 ### Create an Azure DevOps YAML pipeline
 Create a new Azure DevOps YAML pipeline using [azure-pipelines.yml](azure-pipelines.yml). You can refer to  [create an azure devops yaml pipeline](https://learn.microsoft.com/en-us/azure/container-apps/azure-pipelines#create-an-azure-devops-yaml-pipeline) for detailed steps.
 
+#### Create Personal Access Token (PAT)
+This step is required only if you want to use PAT based authentication. Create a new Personal Access Token in Azure DevOps. You can refer to [Create a PAT](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) for detailed steps.
+
+#### Create a new secret variable
+This step is required only if you want to use PAT based authentication. Create a new secret variable called "azpToken" and set the value with the PAT value generated. You can refer to [Secret variable in the UI](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash#secret-variable-in-the-ui) for detailed steps.
+
+
 ### Create Agent pool
 Create a new agent pool following steps given [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#create-agent-pools) 
 
