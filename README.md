@@ -22,7 +22,7 @@ Container Instance runs Azure DevOps self hosted agent container and listen for 
 
 ## Getting Started
 
-In this quick start, you create Azure DevOps pipeline which deploys Bicep script to create an Azure container registry, run registry build task to build image from a Dockerfile and push to container registry, create user assigned identity, assign acrPull role to user assigned identity on container registry, create container instance with both system assigned identity & user assigned identity, set the registry image from container registry and set environment variables AZP_URL, AZP_AGENT_NAME, AZP_POOL and or AZP_TOKEN.
+In this quick start, you create Azure DevOps pipeline which deploys Bicep script to create an Azure container registry, run registry build task to build image from a Dockerfile and push to container registry, create user assigned managed identity, assign acrPull role to user assigned identity on container registry, create container instance with both system assigned identity & user assigned identity, set the registry image from container registry and set environment variables AZP_URL, AZP_AGENT_NAME, AZP_POOL and AZP_TOKEN.
 
 Here is the summary of the code files in this repository:
 
@@ -95,10 +95,6 @@ Container Instance: It creates a container instance with the UAI. The app is con
 
 You get an error in container app after the deployment due to missing permissions. 
 <img src="images/agent-error.png" alt="alt text" width="400"/>
-
-or
-
-Access denied. aci-azpagent needs Manage permissions for pool selfhostedagentpool to perform the action. For more information, contact the Azure DevOps Server administrator.
 
 To fix this issue, you need to add below permissions in Azure DevOps
 

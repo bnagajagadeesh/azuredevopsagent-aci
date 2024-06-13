@@ -87,7 +87,7 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
             }
             {
               name: 'AZP_TOKEN'
-              value: azpToken
+              secureValue: azpToken              
             }
           ]
         }
@@ -117,7 +117,7 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
             }
             {
               name: 'AZP_TOKEN'
-              value: azpToken
+              secureValue: azpToken
             }
           ]
         }
@@ -147,7 +147,7 @@ resource aci 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
             }
             {
               name: 'AZP_TOKEN'
-              value: azpToken
+              secureValue: azpToken
             }
           ]
         }
