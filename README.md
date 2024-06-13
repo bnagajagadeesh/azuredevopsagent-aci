@@ -2,7 +2,9 @@
 
 This is the companion repository for the [Run a self hosted agent in Docker](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops) 
 
-This repository helps Azure DevOps engineers to setup Azure DevOps self-hosted agent running with Azure Container Instance using managed identity
+This repository helps Azure DevOps engineers to setup Azure DevOps self-hosted agent running with Azure Container Instance
+
+This file provides instructions on how to use the code files in this repository. It includes steps to create an Azure DevOps YAML pipeline, create an agent pool, and build & deploy to a Container Instance.
 
 ## Architecture
 ![alt text](images/aci-selfhostedagent-architecture.png)
@@ -21,6 +23,20 @@ Container Instance runs Azure DevOps self hosted agent container and listen for 
 ## Getting Started
 
 In this quick start, you create Azure DevOps pipeline which deploys Bicep script to create an Azure container registry, run registry build task to build from a Dockerfile and push to container registry, create user assigned identity, assign acrPull role to user assigned identity on container registry, create container instance with both system assigned identity & user assigned identity, set the registry image from container registry and set environment variables AZP_URL, AZP_AGENT_NAME and AZP_POOL.
+
+Here is the summary of the code files in this repository:
+
+ContainerInstance/azure-pipelines.yml: This is a YAML file that defines an Azure DevOps pipeline. The pipeline is triggered on changes to the main branch. It uses the AzureResourceManagerTemplateDeployment@3 task to deploy resources to Azure using the main.bicep file. The deployment is done to a specific resource group in a specific Azure subscription.
+
+ContainerInstance/start.sh: This is a bash script that is used to start an Azure DevOps agent in an Azure Container Instance. It fetches an access token from the Azure Instance Metadata service and uses it to authenticate the agent. It also handles cleanup of the agent configuration upon exit.
+
+ContainerInstance/main.bicep: This file is not shown in the provided excerpts, but based on the README.md and azure-pipelines.yml, it likely contains a Bicep template for deploying resources to Azure. The template is used by the AzureResourceManagerTemplateDeployment@3 task in the Azure DevOps pipeline.
+
+ContainerInstance/Dockerfile: This file is not shown in the provided excerpts, but it likely contains instructions for building a Docker image that is used to run the Azure DevOps agent in an Azure Container Instance.
+
+The files in the ContainerInstanceWithPAT directory uses a Personal Access Token (PAT) for authentication instead of the Azure Instance Metadata service.
+
+You can use the files from ContainerInstance or ContainerInstanceWithPAT depending on your requirement
 
 ### Create an Azure DevOps repository and clone the source code
 Create a new Git repository in Azure DevOps and clone the source code from [Github repo](https://github.com/bnagajagadeesh/azuredevopsagent-aci.git).
