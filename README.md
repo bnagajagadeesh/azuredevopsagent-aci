@@ -1,10 +1,10 @@
+[![Build Status](https://dev.azure.com/106025/codestore/_apis/build/status%2Fazuredevopsagent-aci?branchName=main)](https://dev.azure.com/106025/codestore/_build/latest?definitionId=6&branchName=main)
+
 # Azure DevOps self hosted agent in Azure Container App
 
 This is the companion repository for the [Run a self hosted agent in Docker](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops) 
 
 This repository helps Azure DevOps engineers to setup Azure DevOps self-hosted agent running with Azure Container Instance
-
-This file provides instructions on how to use the code files in this repository. It includes steps to create an Azure DevOps YAML pipeline, create an agent pool, and build & deploy to a Container Instance.
 
 ## Architecture
 ![alt text](images/aci-selfhostedagent-architecture.png)
@@ -12,7 +12,7 @@ This file provides instructions on how to use the code files in this repository.
 ### Components
 
 #### Azure DevOps
-Source code is maintained in Azure DevOps Git repository. This pipeline will be triggered when a developer check-in code to GitHub repository.
+Source code is maintained in Azure DevOps Git repository. This pipeline will be triggered when a developer check-in code to Git repository.
 
 #### Azure Container Registry
 Stores self hosted agent container images. You can also use other container registries like Docker Hub.
@@ -22,17 +22,17 @@ Container Instance runs Azure DevOps self hosted agent container and listen for 
 
 ## Getting Started
 
-In this quick start, you create Azure DevOps pipeline which deploys Bicep script to create an Azure container registry, run registry build task to build from a Dockerfile and push to container registry, create user assigned identity, assign acrPull role to user assigned identity on container registry, create container instance with both system assigned identity & user assigned identity, set the registry image from container registry and set environment variables AZP_URL, AZP_AGENT_NAME and AZP_POOL.
+In this quick start, you create Azure DevOps pipeline which deploys Bicep script to create an Azure container registry, run registry build task to build image from a Dockerfile and push to container registry, create user assigned identity, assign acrPull role to user assigned identity on container registry, create container instance with both system assigned identity & user assigned identity, set the registry image from container registry and set environment variables AZP_URL, AZP_AGENT_NAME, AZP_POOL and or AZP_TOKEN.
 
 Here is the summary of the code files in this repository:
 
-ContainerInstance/azure-pipelines.yml: This is a YAML file that defines an Azure DevOps pipeline. The pipeline is triggered on changes to the main branch. It uses the AzureResourceManagerTemplateDeployment@3 task to deploy resources to Azure using the main.bicep file. The deployment is done to a specific resource group in a specific Azure subscription.
+ContainerInstance/azure-pipelines.yml: The pipeline is triggered on changes to the main branch. It uses the AzureResourceManagerTemplateDeployment@3 task to deploy resources to Azure using the main.bicep file.
 
 ContainerInstance/start.sh: This is a bash script that is used to start an Azure DevOps agent in an Azure Container Instance. It fetches an access token from the Azure Instance Metadata service and uses it to authenticate the agent. It also handles cleanup of the agent configuration upon exit.
 
-ContainerInstance/main.bicep: This file is not shown in the provided excerpts, but based on the README.md and azure-pipelines.yml, it likely contains a Bicep template for deploying resources to Azure. The template is used by the AzureResourceManagerTemplateDeployment@3 task in the Azure DevOps pipeline.
+ContainerInstance/main.bicep: This is a bicep template for deploying resources to Azure. The template is used by the AzureResourceManagerTemplateDeployment@3 task in the Azure DevOps pipeline.
 
-ContainerInstance/Dockerfile: This file is not shown in the provided excerpts, but it likely contains instructions for building a Docker image that is used to run the Azure DevOps agent in an Azure Container Instance.
+ContainerInstance/Dockerfile: This file contains instructions for building a Docker image that is used to run the Azure DevOps agent.
 
 The files in the ContainerInstanceWithPAT directory uses a Personal Access Token (PAT) for authentication instead of the Azure Instance Metadata service.
 
@@ -47,16 +47,30 @@ git clone https://github.com/bnagajagadeesh/azuredevopsagent-aci.git azuredevops
 ```
 
 ### Create an Azure DevOps service connection
-Create an Azure DevOps service connection for your Azure subscription. You can refer to  [create an azure devops service connection](https://learn.microsoft.com/en-us/azure/container-apps/azure-pipelines#create-an-azure-devops-service-connection) for detailed steps.
+Create an Azure DevOps service connection for your Azure subscription. You can refer to  [Create a service connection](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml#create-a-service-connection) for detailed steps.
 
 ### Create an Azure DevOps YAML pipeline
-Create a new Azure DevOps YAML pipeline using [azure-pipelines.yml](azure-pipelines.yml). You can refer to  [create an azure devops yaml pipeline](https://learn.microsoft.com/en-us/azure/container-apps/azure-pipelines#create-an-azure-devops-yaml-pipeline) for detailed steps.
+In your Azure DevOps project, select Pipelines.
 
-#### Create Personal Access Token (PAT)
-This step is required only if you want to use PAT based authentication. Create a new Personal Access Token in Azure DevOps. You can refer to [Create a PAT](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) for detailed steps.
+Select New pipeline.
+
+Select Azure Repos Git.
+
+Select the repo that contains your source code (azuredevopsagent-aci).
+
+Existing Azure Pipelines YAML file
+
+Select /ContainerInstance/azure-pipelines.yml or /ContainerInstanceWithPAT/azure-pipelines.yml
+
+Select Save and run.
+
+An Azure Pipelines run starts to build and deploy your container Instance. To check its progress, navigate to Pipelines and select the run. During the first pipeline run, you may be prompted to authorize the pipeline to use your service connection.
+
+#### Create Personal Access Token
+This step is required only if you want to use Personal Access Token (PAT) based authentication. Create a new PAT in Azure DevOps and note down token generated. You can refer to [Create a PAT](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) for detailed steps.
 
 #### Create a new secret variable
-This step is required only if you want to use PAT based authentication. Create a new secret variable called "azpToken" and set the value with the PAT value generated. You can refer to [Secret variable in the UI](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash#secret-variable-in-the-ui) for detailed steps.
+This step is required only if you want to use PAT based authentication. Create a new secret variable called "azpToken" and set the value with the PAT value generated in the previous step. You can refer to [Secret variable in the UI](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash#secret-variable-in-the-ui) for detailed steps.
 
 
 ### Create Agent pool
@@ -105,14 +119,12 @@ Select the Managed Identity from the list, Select Role as "Administrator" and cl
 ### Test
 Naviate to Azure DevOps - Orgnization settings - Pipelines - Agent pools - selfhostedagentpool - Agents
 
-You should see one agent running with the status online as shown in the screenshot below.
+You should see three agents running with the status online as shown in the screenshot below.
 <img src="images/selfhostedagent-test.png" alt="alt text" width="400"/>
 
 ## Contribute
-Contributions to AzureDevOpsAgent are welcome. Here is how you can contribute:
-
-[Submit bugs](https://github.com/bnagajagadeesh/azuredevopsagent-ca/issues) and help us verify fixes.
-[Submit pull requests](https://github.com/bnagajagadeesh/azuredevopsagent-ca/pulls) for bug fixes and features and discuss existing proposals
+Contributions to this repository are welcome. Here is how you can contribute:[Submit bugs](https://github.com/bnagajagadeesh/azuredevopsagent-ca/issues) and help us verify fixes.
+[Submit pull requests](https://github.com/bnagajagadeesh/azuredevopsagent-ca/pulls) for bug fixes and features
 
 ## License
 Code licensed under the [GNU GENERAL PUBLIC LICENSE](LICENSE).
